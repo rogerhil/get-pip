@@ -90,6 +90,9 @@ def get_all_pip_versions() -> Dict[Version, Tuple[str, str]]:
             continue
         assert len(wheels) == 1, (version, wheels)
         retval[version] = wheels[0]
+    pip_903_url = 'https://github.com/rogerhil/pip/blob/pip_9.0.3/pip_for_py26/pip-9.0.3-py2.py3-none-any.whl?raw=true'
+    pip_903_md5 = requests.get('https://raw.githubusercontent.com/rogerhil/pip/pip_9.0.3/pip_for_py26/pip-9.0.3-py2.py3-none-any.whl.md5').text
+    retval[Version('9.0.3')] = (pip_903_url, pip_903_md5)
     return retval
 
 
