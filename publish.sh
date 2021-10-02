@@ -1,24 +1,26 @@
 #!/usr/bin/env bash
-set -x
 
 PWD=$(pwd)
 
 function handle_exit {
   cd $PWD
+  echo 'FAILED!!!'
+  exit 1
 }
-trap 'handle_exit' EXIT
-
-sdfasdfas
+trap 'handle_exit' ERR
 
 COMMIT_MSG=$1
+if [ -z "$COMMIT_MSG" ]; then
+  echo 'Commit message is required!'
+  exit 2
+fi
 
 git branch | grep get-pip_for_python2.6.6
 if [ $? -ne 0 ]; then
   echo "get-pip forked repo must be in git branch get-pip_for_python2.6.6"
   exit 1
 fi
-echo "Sleeping for 10 seconds"
-sleep 10
+
 python3 scripts/generate.py
 git commit -a -m "${COMMIT_MSG}"
 git push origin get-pip_for_python2.6.6
